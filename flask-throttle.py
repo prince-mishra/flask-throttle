@@ -123,4 +123,4 @@ if __name__ == '__main__':
     handler = StreamHandler()
     handler.setLevel(logging.INFO)
     app.logger.addHandler(handler)
-    app.run(threaded = True)
+    app.run()

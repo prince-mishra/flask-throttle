@@ -34,9 +34,6 @@ def bad_request(message):
 hotels = {}
 city_wise_hotel_ids = {}
 
-api_cache = {}
-
-
 def is_rate_limited(api_key):
     api_cache = API_CACHE[api_key]
     try:

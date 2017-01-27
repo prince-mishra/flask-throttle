@@ -19,15 +19,21 @@ Problem 2: rate limiting
 ========================
 
 1. API keys have specified rate limits in Config
+
 2. The API keys in the Config are picked and a map of the form {'api_key' : API_LIMITS_CACHE } is created
+
 3. API_LIMITS_CACHE is an object (a) which stores - is the API currently suspended? and (b) maintains a map RequestCache
 for every limit interval
+
 4. keys for RequestCache are generated using api_key + the bucket current request will fall in. Assume we are limiting
 on a 1 minute window, then all requests for the current minute should map to the current minute bucket.
+
 5. RequestCache.count is initialised with the number of requests it should support in the specified duration
+
 6. Whenever a new request comes, the count is decremented and when the count becomes 0, a TooManyRequests exception is
 raised. As a result, the parent object "APILimitsCache" is updated with the duration for which it should be marked
 throttled.
+
 
 
 ```python

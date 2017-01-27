@@ -21,12 +21,14 @@ from flask import request, Response
 from errors import TooManyRequestsException, APISuspendedException
 from Config import API_CACHE
 
-def rate_limited_response():
+def rate_limited():
     return Response('Too many requests', 429)
 
-
-def unauthorized_response():
+def unauthorized():
     return Response('Unauthorized', 401)
+
+def bad_request(message):
+    return Response(message, 400)
 
 
 hotels = {}
@@ -53,9 +55,9 @@ def rate_limit(func):
     def decorated(*args, **kwargs):
         api_key = request.headers.get('Authorization')
         if not api_key or not API_CACHE.get(api_key):
-            return unauthorized_response()
+            return unauthorized()
         if is_rate_limited(api_key):
-            return rate_limited_response()
+            return rate_limited()
         return func(*args, **kwargs)
     return decorated
 
@@ -97,11 +99,19 @@ def build_api_cache():
 
 app = Flask(__name__)
 
-@app.route('/search_by_city/<city>')
+@app.route('/search_by_city')
 @rate_limit
-def search_by_city(city):
+def search_by_city():
     #print hotels
+    city = request.args.get('city')
+    if not city:
+        return bad_request("City not specified.")
+    order = request.args.get('order', 'ASC')
     hotel_ids = city_wise_hotel_ids[city]
+
+    if order == 'DESC':
+        hotel_ids.reverse()
+
     resp = {
         'hotels' : []
     }

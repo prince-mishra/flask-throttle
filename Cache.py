@@ -58,7 +58,8 @@ class APILimitsCache(object):
 
     def generate_request_cache_key(self, start_time):
         # Adding window size to bucket ensures that all requests in the current window fall in the same bucket
-        bucket = (start_time // self.api_throttle_limits['window']) + self.api_throttle_limits['window']
+        window = self.api_throttle_limits['window']
+        bucket = (start_time // window) * window + window
         return self.api_key + '|' + str(bucket)
 
     def accessed(self):
@@ -92,3 +93,10 @@ class APILimitsCache(object):
     def cull(self):
         # get rid of older windows
         pass
+
+    def __str__(self):
+        ret = {}
+        for k, v in self.__request_cache.items():
+            ret[k] = v.count
+        return str(ret)
+

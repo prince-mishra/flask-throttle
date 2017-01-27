@@ -32,9 +32,9 @@ KEY_SPECIFIC_LIMITS = {
         'suspension': API_DEFAULT_SUSPENDED_FOR
     },
     'THROTTLE_10_IN_2_c': {
-            'window': 2,
+            'window': 2*10,
             'count': 10,
-            'suspension': 5
+            'suspension': 15
         }
 
 }

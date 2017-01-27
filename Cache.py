@@ -28,7 +28,7 @@ class RequestCache(object):
 
     def decr_count(self):
         self.__lock.acquire()
-        self.count -= self.count
+        self.count -= 1
         self.__lock.release()
 
         if self.count < 1:
@@ -48,7 +48,7 @@ class APILimitsCache(object):
         return self.__request_cache.get(cache_key)
 
     def create_request_cache(self, cache_key):
-        count = self.api_throttle_limits['count'] - 1
+        count = self.api_throttle_limits['count']
         self.__lock.acquire()
         print "CREATING REQUEST CACHE ", cache_key
         if not self.__request_cache.get(cache_key):

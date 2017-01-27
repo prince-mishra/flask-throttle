@@ -110,7 +110,7 @@ def search_by_city():
     hotel_ids = city_wise_hotel_ids[city]
 
     if order == 'DESC':
-        hotel_ids.reverse()
+        hotel_ids = reversed(hotel_ids)
 
     resp = {
         'hotels' : []

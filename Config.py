@@ -20,7 +20,23 @@ KEY_SPECIFIC_LIMITS = {
             'window': 5 * 60,
             'count': 50,
             'suspension': API_DEFAULT_SUSPENDED_FOR
-    }
+    },
+    'THROTTLE_10_IN_2': {
+            'window': 2,
+            'count': 10,
+            'suspension': API_DEFAULT_SUSPENDED_FOR
+    },
+    'THROTTLE_10_IN_2_b': {
+        'window': 2,
+        'count': 10,
+        'suspension': API_DEFAULT_SUSPENDED_FOR
+    },
+    'THROTTLE_10_IN_2_c': {
+            'window': 2,
+            'count': 10,
+            'suspension': 5
+        }
+
 }
 
 API_CACHE = {}

@@ -28,14 +28,11 @@ class RequestCache(object):
 
     def decr_count(self):
         self.__lock.acquire()
-        reached_zero = False
-        if self.count < 1:
-            reached_zero = True
-        else:
-            self.count -= self.count
+        self.count -= self.count
         self.__lock.release()
 
-        if reached_zero:
+        if self.count < 1:
+            print "Raising TooManyRequestsException"
             raise TooManyRequestsException
 
 
@@ -60,7 +57,8 @@ class APILimitsCache(object):
         return self.__request_cache[cache_key]
 
     def generate_request_cache_key(self, start_time):
-        bucket = start_time // self.api_throttle_limits['window']
+        # Adding window size to bucket ensures that all requests in the current window fall in the same bucket
+        bucket = (start_time // self.api_throttle_limits['window']) + self.api_throttle_limits['window']
         return self.api_key + '|' + str(bucket)
 
     def accessed(self):
